@@ -10,6 +10,9 @@ let distance = 3;
 let bodySize = document.body.getBoundingClientRect();
 let logoSize = originalLogo.getBoundingClientRect();
 let maxHeight = Math.floor(bodySize.height - logoSize.height);
+let currentLogo;
+let currentLogoOffsetTop;
+let currentLogoHasClassDown;
 
 function init() {
   if (allLogos) {
@@ -40,19 +43,23 @@ function init() {
 }
 
 function move() {
+
   for (let i = 0; i < allLogos.length; i++) {
-    let currentLogo = allLogos[i];
-    let currentLogoPosition = currentLogo.classList.contains("down")
-      ? currentLogo.offsetTop + distance
-      : currentLogo.offsetTop - distance;
+    currentLogo = allLogos[i];
+    currentLogoOffsetTop = currentLogo.offsetTop
+    currentLogoHasClassDown = currentLogo.classList.contains("down")
+
+    let currentLogoPosition = currentLogoHasClassDown
+      ? currentLogoOffsetTop + distance
+      : currentLogoOffsetTop - distance;
     if (currentLogoPosition < 0) currentLogoPosition = 0;
     if (currentLogoPosition > maxHeight) currentLogoPosition = maxHeight;
     currentLogo.style.top = currentLogoPosition + "px";
-    if (currentLogo.offsetTop === 0) {
+    if (currentLogoOffsetTop === 0) {
       currentLogo.classList.remove("up");
       currentLogo.classList.add("down");
     }
-    if (currentLogo.offsetTop === maxHeight) {
+    if (currentLogoOffsetTop === maxHeight) {
       currentLogo.classList.remove("down");
       currentLogo.classList.add("up");
     }
